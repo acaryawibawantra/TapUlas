@@ -1,0 +1,26 @@
+{
+  "name": "tapulas",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "gen:card": "node scripts/generate-card.mjs"
+  },
+  "dependencies": {
+    "@supabase/supabase-js": "^2.45.0",
+    "bcryptjs": "^2.4.3",
+    "next": "14.2.5",
+    "qrcode": "^1.5.3",
+    "react": "18.3.1",
+    "react-dom": "18.3.1",
+    "dotenv": "^16.4.5"
+  },
+  "devDependencies": {
+    "@types/bcryptjs": "^2.4.6",
+    "@types/node": "^20.14.9",
+    "@types/react": "^18.3.3",
+    "typescript": "^5.5.3"
+  }
+}
