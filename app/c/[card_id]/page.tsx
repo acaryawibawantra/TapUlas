@@ -2,10 +2,10 @@ import { redirect, notFound } from "next/navigation";
 import { getSupabaseServerClient } from "@/lib/supabaseServer";
 import ActivationForm from "./ActivationForm";
 
-// Halaman ini yang di-tap NFC / discan QR. Logic-nya persis seperti di PRD:
-// - card_id tidak ada di database -> 404
-// - is_active == false -> tampilkan form aktivasi
-// - is_active == true  -> redirect otomatis ke halaman review Google
+// Pastikan halaman ini SELALU mengecek database terbaru (tanpa cache Next.js)
+// setiap kali kartu di-tap NFC / di-scan QR oleh siapapun.
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
 
 export default async function CardPage({
   params,

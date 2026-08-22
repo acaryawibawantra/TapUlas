@@ -13,7 +13,7 @@ export default function ActivationForm({ cardId }: { cardId: string }) {
   const [suggestions, setSuggestions] = useState<PlaceSuggestion[]>([]);
   const [selectedPlace, setSelectedPlace] = useState<PlaceSuggestion | null>(null);
   const [isSearching, setIsSearching] = useState(false);
-  
+
   // PIN state (4 digits)
   const [pinDigits, setPinDigits] = useState<string[]>(["", "", "", ""]);
   const [showPin, setShowPin] = useState(false);
