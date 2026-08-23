@@ -1,4 +1,4 @@
-import Link from "next/link";
+import EditPortal from "./EditPortal";
 
 export default function Home() {
   return (
@@ -56,8 +56,11 @@ export default function Home() {
         </div>
       </div>
 
+      {/* Owner Portal Section */}
+      <EditPortal />
+
       {/* Steps Info */}
-      <div style={{ borderTop: "1px solid var(--border-color)", paddingTop: 16, marginBottom: 18 }}>
+      <div style={{ borderTop: "1px solid var(--border-color)", paddingTop: 16, marginTop: 20, marginBottom: 18 }}>
         <h4 style={{ fontSize: 12, fontWeight: 700, color: "var(--text-muted)", textTransform: "uppercase", letterSpacing: 0.5, marginBottom: 8 }}>
           Alur Sistem:
         </h4>
@@ -82,7 +85,7 @@ export default function Home() {
           fontWeight: 500,
         }}
       >
-        Untuk mencoba kartu testing, jalankan <code>npm run gen:card</code> lalu buka link kartu yang dihasilkan.
+        Dapatkan review Google Maps lebih cepat untuk bisnis Anda dengan TapUlas.
       </div>
     </main>
   );
