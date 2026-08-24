@@ -12,16 +12,18 @@ function generateCardId(length = 6) {
 
 export async function POST(req: NextRequest) {
   try {
+    const authHeader = req.headers.get("authorization");
     const body = await req.json();
-    const { secretKey, action, cardId, count } = body || {};
-    const adminSecret = process.env.ADMIN_SECRET_KEY || "tapulas-admin-secret-2026";
+    const { cardId, count } = body || {};
+    const adminSecret = process.env.ADMIN_SECRET_KEY || "ulasin-admin-secret-2026";
 
-    if (!secretKey || secretKey !== adminSecret) {
-      return NextResponse.json({ error: "Akses ditolak." }, { status: 401 });
+    if (authHeader !== `Bearer ${adminSecret}`) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
+    const { action } = body;
     const supabase = getSupabaseServerClient();
-    const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "https://tapulas.vercel.app";
+    const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "https://ulasin-id.vercel.app";
 
     // 1. RESET CARD (Set back to unactivated status)
     if (action === "reset") {

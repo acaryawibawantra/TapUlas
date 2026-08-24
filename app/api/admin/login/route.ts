@@ -4,7 +4,7 @@ export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
     const { secretKey } = body || {};
-    const adminSecret = process.env.ADMIN_SECRET_KEY || "tapulas-admin-secret-2026";
+    const adminSecret = process.env.ADMIN_SECRET_KEY || "ulasin-admin-secret-2026";
 
     if (!secretKey || secretKey !== adminSecret) {
       return NextResponse.json(

@@ -13,7 +13,7 @@ export default function AdminPage() {
 
   // Restore saved session from localStorage if available
   useEffect(() => {
-    const savedKey = localStorage.getItem("tapulas_admin_secret");
+    const savedKey = localStorage.getItem("ulasin_admin_secret");
     if (savedKey) {
       setSecretKey(savedKey);
     }
@@ -42,7 +42,7 @@ export default function AdminPage() {
         return;
       }
 
-      localStorage.setItem("tapulas_admin_secret", inputKey);
+      localStorage.setItem("ulasin_admin_secret", inputKey);
       setSecretKey(inputKey);
     } catch (err) {
       setErrorMsg("Terjadi kesalahan koneksi server.");
@@ -52,7 +52,7 @@ export default function AdminPage() {
   }
 
   function handleLogout() {
-    localStorage.removeItem("tapulas_admin_secret");
+    localStorage.removeItem("ulasin_admin_secret");
     setSecretKey("");
     setInputKey("");
   }

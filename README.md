@@ -1,4 +1,4 @@
-# TapUlas — Starter Project
+# UlasIN — Starter Project
 
 Sesuai PRD: kartu NFC + QR yang belum aktif mengarah ke form aktivasi;
 setelah pemilik bisnis mengisi nama bisnis + PIN, kartu otomatis redirect
