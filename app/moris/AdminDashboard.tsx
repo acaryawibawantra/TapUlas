@@ -46,6 +46,14 @@ export default function AdminDashboard({
   const [isGenerating, setIsGenerating] = useState(false);
   const [newGeneratedCards, setNewGeneratedCards] = useState<GeneratedCardItem[]>([]);
 
+  // QR Preview Modal & Copy feedback states
+  const [copiedCardId, setCopiedCardId] = useState<string | null>(null);
+  const [qrPreviewModal, setQrPreviewModal] = useState<{
+    cardId: string;
+    url: string;
+    qrDataUrl: string;
+  } | null>(null);
+
   useEffect(() => {
     fetchCards();
   }, []);
@@ -292,7 +300,7 @@ export default function AdminDashboard({
               <table className="w-full text-left border-collapse min-w-[800px]">
                 <thead>
                   <tr className="bg-surface-container-low border-b border-outline-variant">
-                    <th className="py-4 px-6 text-label-bold font-label-bold text-on-surface-variant">ID Kartu</th>
+                    <th className="py-4 px-6 text-label-bold font-label-bold text-on-surface-variant">ID Kartu &amp; Link NFC Tools</th>
                     <th className="py-4 px-6 text-label-bold font-label-bold text-on-surface-variant">Status</th>
                     <th className="py-4 px-6 text-label-bold font-label-bold text-on-surface-variant">Nama Bisnis &amp; Google Place ID</th>
                     <th className="py-4 px-6 text-label-bold font-label-bold text-on-surface-variant">Tanggal Dibuat / Aktif</th>
@@ -300,85 +308,130 @@ export default function AdminDashboard({
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-outline-variant">
-                  {filteredCards.map((c) => (
-                    <tr key={c.card_id} className="hover:bg-surface-bright transition-colors">
-                      <td className="py-4 px-6 text-label-bold font-label-bold font-mono text-primary text-base">
-                        {c.card_id}
-                      </td>
+                  {filteredCards.map((c) => {
+                    const currentOrigin = typeof window !== "undefined" ? window.location.origin : "https://ulasin-id.vercel.app";
+                    const nfcUrl = `${currentOrigin}/c/${c.card_id}`;
 
-                      <td className="py-4 px-6">
-                        {c.is_active ? (
-                          <span className="inline-flex items-center space-x-1.5 px-2.5 py-1 rounded-full bg-[#F0FDF4] border border-[#BBF7D0] text-[#166534] text-label-caps font-label-caps">
-                            <span className="w-1.5 h-1.5 rounded-full bg-[#22C55E]"></span>
-                            <span>Aktif</span>
-                          </span>
-                        ) : (
-                          <span className="inline-flex items-center space-x-1.5 px-2.5 py-1 rounded-full bg-[#FEFCE8] border border-[#FEF08A] text-[#854D0E] text-label-caps font-label-caps">
-                            <span className="w-1.5 h-1.5 rounded-full bg-[#EAB308]"></span>
-                            <span>Belum Aktif</span>
-                          </span>
-                        )}
-                      </td>
-
-                      <td className="py-4 px-6 max-w-xs">
-                        {c.business_name ? (
-                          <div>
-                            <div className="text-label-bold font-label-bold text-primary mb-1">
-                              {c.business_name}
-                            </div>
-                            {c.google_review_url && (
-                              <a
-                                href={c.google_review_url}
-                                target="_blank"
-                                rel="noreferrer"
-                                className="text-body-sm font-body-sm text-secondary hover:underline inline-flex items-center space-x-1"
-                              >
-                                <span>Buka Link Review</span>
-                                <span className="material-symbols-outlined text-[14px]">open_in_new</span>
-                              </a>
-                            )}
+                    return (
+                      <tr key={c.card_id} className="hover:bg-surface-bright transition-colors">
+                        <td className="py-4 px-6">
+                          <div className="font-mono font-bold text-primary text-base mb-1">
+                            {c.card_id}
                           </div>
-                        ) : (
-                          <span className="text-body-sm font-body-sm text-text-muted italic">
-                            Belum diaktifkan pemilik bisnis
-                          </span>
-                        )}
-                      </td>
-
-                      <td className="py-4 px-6 text-body-sm font-body-sm text-on-surface-variant">
-                        <div className="mb-0.5">Dibuat: {new Date(c.created_at).toLocaleDateString("id-ID")}</div>
-                        {c.activated_at && (
-                          <div className="text-[#166534]">
-                            Aktif: {new Date(c.activated_at).toLocaleDateString("id-ID")}
-                          </div>
-                        )}
-                      </td>
-
-                      <td className="py-4 px-6 text-right">
-                        <div className="flex items-center justify-end space-x-2">
-                          {c.is_active && (
+                          {/* Copy NFC Link Box below ID Card */}
+                          <div className="mt-1 flex items-center gap-1.5 bg-surface-container-low border border-outline-variant rounded-md px-2.5 py-1.5 max-w-[280px]">
+                            <span className="text-[11px] font-mono text-on-surface-variant truncate flex-1 select-all" title={nfcUrl}>
+                              {nfcUrl}
+                            </span>
                             <button
-                              onClick={() => setConfirmModal({ type: "reset", cardId: c.card_id })}
-                              disabled={actionLoadingId === c.card_id}
-                              className="inline-flex items-center justify-center px-3 py-1.5 border border-outline-variant text-on-surface-variant rounded-md hover:bg-surface-container transition-colors text-label-caps font-label-caps space-x-1 cursor-pointer"
+                              type="button"
+                              onClick={() => {
+                                navigator.clipboard.writeText(nfcUrl);
+                                setCopiedCardId(c.card_id);
+                                setTimeout(() => setCopiedCardId(null), 2000);
+                              }}
+                              className="text-secondary hover:text-primary transition-colors text-[11px] font-bold shrink-0 flex items-center gap-1 px-2 py-1 rounded bg-surface-white border border-outline-variant hover:bg-surface-bright cursor-pointer"
+                              title="Salin Link NFC untuk NFC Tools"
                             >
-                              <span className="material-symbols-outlined text-[16px]">restart_alt</span>
-                              <span>Reset</span>
+                              <span className="material-symbols-outlined text-[13px]">
+                                {copiedCardId === c.card_id ? "check" : "content_copy"}
+                              </span>
+                              <span>{copiedCardId === c.card_id ? "Tersalin!" : "Salin NFC"}</span>
                             </button>
-                          )}
+                          </div>
+                        </td>
 
-                          <button
-                            onClick={() => setConfirmModal({ type: "delete", cardId: c.card_id })}
-                            disabled={actionLoadingId === c.card_id}
-                            className="inline-flex items-center justify-center px-3 py-1.5 border border-error-container text-error rounded-md hover:bg-error-container transition-colors text-label-caps font-label-caps space-x-1 cursor-pointer"
-                          >
-                            <span className="material-symbols-outlined text-[16px]">delete</span>
-                            <span>Hapus</span>
-                          </button>
-                        </div>
-                      </td>
-                    </tr>
-                  ))}
+                        <td className="py-4 px-6">
+                          {c.is_active ? (
+                            <span className="inline-flex items-center space-x-1.5 px-2.5 py-1 rounded-full bg-[#F0FDF4] border border-[#BBF7D0] text-[#166534] text-label-caps font-label-caps">
+                              <span className="w-1.5 h-1.5 rounded-full bg-[#22C55E]"></span>
+                              <span>Aktif</span>
+                            </span>
+                          ) : (
+                            <span className="inline-flex items-center space-x-1.5 px-2.5 py-1 rounded-full bg-[#FEFCE8] border border-[#FEF08A] text-[#854D0E] text-label-caps font-label-caps">
+                              <span className="w-1.5 h-1.5 rounded-full bg-[#EAB308]"></span>
+                              <span>Belum Aktif</span>
+                            </span>
+                          )}
+                        </td>
+
+                        <td className="py-4 px-6 max-w-xs">
+                          {c.business_name ? (
+                            <div>
+                              <div className="text-label-bold font-label-bold text-primary mb-1">
+                                {c.business_name}
+                              </div>
+                              {c.google_review_url && (
+                                <a
+                                  href={c.google_review_url}
+                                  target="_blank"
+                                  rel="noreferrer"
+                                  className="text-body-sm font-body-sm text-secondary hover:underline inline-flex items-center space-x-1"
+                                >
+                                  <span>Buka Link Review</span>
+                                  <span className="material-symbols-outlined text-[14px]">open_in_new</span>
+                                </a>
+                              )}
+                            </div>
+                          ) : (
+                            <span className="text-body-sm font-body-sm text-text-muted italic">
+                              Belum diaktifkan pemilik bisnis
+                            </span>
+                          )}
+                        </td>
+
+                        <td className="py-4 px-6 text-body-sm font-body-sm text-on-surface-variant">
+                          <div className="mb-0.5">Dibuat: {new Date(c.created_at).toLocaleDateString("id-ID")}</div>
+                          {c.activated_at && (
+                            <div className="text-[#166534]">
+                              Aktif: {new Date(c.activated_at).toLocaleDateString("id-ID")}
+                            </div>
+                          )}
+                        </td>
+
+                        <td className="py-4 px-6 text-right">
+                          <div className="flex items-center justify-end space-x-2">
+                            {/* QR Preview Button */}
+                            <button
+                              onClick={async () => {
+                                try {
+                                  const qrDataUrl = await QRCode.toDataURL(nfcUrl, { width: 600, margin: 2 });
+                                  setQrPreviewModal({ cardId: c.card_id, url: nfcUrl, qrDataUrl });
+                                } catch (e) {
+                                  alert("Gagal membuat QR Code preview.");
+                                }
+                              }}
+                              className="inline-flex items-center justify-center px-3 py-1.5 border border-outline-variant text-primary rounded-md hover:bg-surface-container transition-colors text-label-caps font-label-caps space-x-1 cursor-pointer"
+                              title="Lihat & Download QR Code"
+                            >
+                              <span className="material-symbols-outlined text-[16px]">qr_code_2</span>
+                              <span>Lihat QR</span>
+                            </button>
+
+                            {c.is_active && (
+                              <button
+                                onClick={() => setConfirmModal({ type: "reset", cardId: c.card_id })}
+                                disabled={actionLoadingId === c.card_id}
+                                className="inline-flex items-center justify-center px-3 py-1.5 border border-outline-variant text-on-surface-variant rounded-md hover:bg-surface-container transition-colors text-label-caps font-label-caps space-x-1 cursor-pointer"
+                              >
+                                <span className="material-symbols-outlined text-[16px]">restart_alt</span>
+                                <span>Reset</span>
+                              </button>
+                            )}
+
+                            <button
+                              onClick={() => setConfirmModal({ type: "delete", cardId: c.card_id })}
+                              disabled={actionLoadingId === c.card_id}
+                              className="inline-flex items-center justify-center px-3 py-1.5 border border-error-container text-error rounded-md hover:bg-error-container transition-colors text-label-caps font-label-caps space-x-1 cursor-pointer"
+                            >
+                              <span className="material-symbols-outlined text-[16px]">delete</span>
+                              <span>Hapus</span>
+                            </button>
+                          </div>
+                        </td>
+                      </tr>
+                    );
+                  })}
                 </tbody>
               </table>
             </div>
@@ -410,7 +463,7 @@ export default function AdminDashboard({
               <button
                 type="button"
                 onClick={() => setConfirmModal(null)}
-                className="flex-1 py-2.5 border border-outline-variant rounded-lg font-label-bold text-body-sm"
+                className="flex-1 py-2.5 border border-outline-variant rounded-lg font-label-bold text-body-sm cursor-pointer"
               >
                 Batal
               </button>
@@ -418,11 +471,90 @@ export default function AdminDashboard({
                 type="button"
                 onClick={() => handleCardAction(confirmModal.type, confirmModal.cardId)}
                 disabled={actionLoadingId === confirmModal.cardId}
-                className={`flex-1 py-2.5 text-on-primary rounded-lg font-label-bold text-body-sm ${
+                className={`flex-1 py-2.5 text-on-primary rounded-lg font-label-bold text-body-sm cursor-pointer ${
                   confirmModal.type === "reset" ? "bg-amber-600 hover:bg-amber-700" : "bg-error hover:bg-red-700"
                 }`}
               >
                 {actionLoadingId ? "Memproses..." : confirmModal.type === "reset" ? "Ya, Reset Kartu" : "Ya, Hapus Kartu"}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* QR PREVIEW & NFC LINK MODAL */}
+      {qrPreviewModal && (
+        <div className="fixed inset-0 z-50 bg-black/60 flex items-center justify-center p-4">
+          <div className="bg-surface-white rounded-2xl p-6 max-w-md w-full animate-fade-in shadow-2xl text-center">
+            <div className="flex items-center justify-between mb-4 border-b border-outline-variant pb-3">
+              <h3 className="text-headline-md font-headline-md text-primary flex items-center gap-2">
+                <span className="material-symbols-outlined text-primary">qr_code_2</span>
+                <span>QR Code — {qrPreviewModal.cardId}</span>
+              </h3>
+              <button
+                onClick={() => setQrPreviewModal(null)}
+                className="text-on-surface-variant hover:text-primary text-xl font-bold cursor-pointer"
+              >
+                ✕
+              </button>
+            </div>
+
+            <img
+              src={qrPreviewModal.qrDataUrl}
+              alt={`QR Code ${qrPreviewModal.cardId}`}
+              className="w-48 h-48 mx-auto mb-4 rounded-xl border border-outline-variant p-2 bg-surface-white shadow-sm"
+            />
+
+            <div className="mb-5 bg-surface-container-low p-3 rounded-xl border border-outline-variant text-left">
+              <label className="text-xs font-bold text-primary block mb-1">
+                Link NFC Tools (Siap Disalin):
+              </label>
+              <div className="flex items-center gap-2">
+                <input
+                  type="text"
+                  readOnly
+                  value={qrPreviewModal.url}
+                  className="w-full bg-surface-white border border-outline-variant px-2.5 py-1.5 rounded-md text-xs font-mono text-primary outline-none select-all"
+                />
+                <button
+                  type="button"
+                  onClick={() => {
+                    navigator.clipboard.writeText(qrPreviewModal.url);
+                    setCopiedCardId(qrPreviewModal.cardId);
+                    setTimeout(() => setCopiedCardId(null), 2000);
+                  }}
+                  className="bg-secondary text-on-secondary px-3 py-1.5 rounded-md text-xs font-bold whitespace-nowrap flex items-center gap-1 hover:brightness-110 cursor-pointer"
+                >
+                  <span className="material-symbols-outlined text-[14px]">
+                    {copiedCardId === qrPreviewModal.cardId ? "check" : "content_copy"}
+                  </span>
+                  <span>{copiedCardId === qrPreviewModal.cardId ? "Tersalin!" : "Salin NFC"}</span>
+                </button>
+              </div>
+            </div>
+
+            <div className="flex gap-2">
+              <button
+                type="button"
+                onClick={() => {
+                  const a = document.createElement("a");
+                  a.href = qrPreviewModal.qrDataUrl;
+                  a.download = `${qrPreviewModal.cardId}.png`;
+                  document.body.appendChild(a);
+                  a.click();
+                  document.body.removeChild(a);
+                }}
+                className="flex-1 py-2.5 bg-primary text-on-primary rounded-lg font-label-bold text-body-sm flex items-center justify-center gap-1.5 hover:bg-primary-container cursor-pointer"
+              >
+                <span className="material-symbols-outlined text-sm">download</span>
+                <span>Download {qrPreviewModal.cardId}.png</span>
+              </button>
+              <button
+                type="button"
+                onClick={() => setQrPreviewModal(null)}
+                className="px-4 py-2.5 border border-outline-variant rounded-lg font-label-bold text-body-sm text-on-surface-variant hover:bg-surface-container cursor-pointer"
+              >
+                Tutup
               </button>
             </div>
           </div>
@@ -440,7 +572,7 @@ export default function AdminDashboard({
               </h3>
               <button
                 onClick={() => setShowGenerateModal(false)}
-                className="text-on-surface-variant hover:text-primary text-xl font-bold"
+                className="text-on-surface-variant hover:text-primary text-xl font-bold cursor-pointer"
               >
                 ✕
               </button>
@@ -468,14 +600,14 @@ export default function AdminDashboard({
                   <button
                     type="button"
                     onClick={() => setShowGenerateModal(false)}
-                    className="flex-1 py-3 border border-outline-variant rounded-lg font-label-bold"
+                    className="flex-1 py-3 border border-outline-variant rounded-lg font-label-bold cursor-pointer"
                   >
                     Batal
                   </button>
                   <button
                     type="submit"
                     disabled={isGenerating}
-                    className="flex-1 py-3 bg-primary text-on-primary rounded-lg font-label-bold hover:bg-primary-container"
+                    className="flex-1 py-3 bg-primary text-on-primary rounded-lg font-label-bold hover:bg-primary-container cursor-pointer"
                   >
                     {isGenerating ? "Membuat..." : `Generate ${generateCount} Kartu`}
                   </button>
@@ -490,7 +622,7 @@ export default function AdminDashboard({
 
                   <button
                     onClick={downloadAllQr}
-                    className="bg-primary text-on-primary px-4 py-2 rounded-lg text-xs font-bold hover:bg-primary-container"
+                    className="bg-primary text-on-primary px-4 py-2 rounded-lg text-xs font-bold hover:bg-primary-container cursor-pointer"
                   >
                     📥 Download Semua PNG
                   </button>
@@ -510,7 +642,7 @@ export default function AdminDashboard({
 
                       <button
                         onClick={() => downloadSingleQr(item)}
-                        className="w-full py-1.5 bg-surface-white border border-outline-variant text-xs font-bold rounded-lg hover:bg-surface-container"
+                        className="w-full py-1.5 bg-surface-white border border-outline-variant text-xs font-bold rounded-lg hover:bg-surface-container cursor-pointer"
                       >
                         📥 Download {item.card_id}.png
                       </button>
@@ -520,7 +652,7 @@ export default function AdminDashboard({
 
                 <button
                   onClick={() => setShowGenerateModal(false)}
-                  className="w-full py-3 bg-primary text-on-primary rounded-lg font-label-bold"
+                  className="w-full py-3 bg-primary text-on-primary rounded-lg font-label-bold cursor-pointer"
                 >
                   Selesai
                 </button>
