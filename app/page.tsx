@@ -49,44 +49,49 @@ export default function Home() {
 
       {/* Main Content Canvas */}
       <main className="pt-16 pb-20 md:pb-0">
-        {/* Hero Section */}
-        <section className="px-container-margin py-stack-lg md:py-24 max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-stack-lg items-center">
-          <div className="flex flex-col gap-stack-md text-center md:text-left z-10">
-            <h1 className="text-headline-lg-mobile font-headline-lg-mobile md:text-headline-lg md:font-headline-lg text-primary">
-              Dapatkan Review Google Maps Lebih Cepat
-            </h1>
-            <p className="text-body-lg font-body-lg text-on-surface-variant max-w-2xl mx-auto md:mx-0">
-              Satu tap ke kartu NFC atau scan QR, pelanggan langsung diarahkan ke halaman ulasan bisnis Anda. Tingkatkan reputasi online tanpa friksi.
-            </p>
-            <div className="flex flex-col sm:flex-row gap-gutter justify-center md:justify-start pt-4">
-              <a
-                href="#portal"
-                className="bg-cta-activation text-on-primary font-label-bold text-label-bold px-8 py-4 rounded-lg hover:brightness-110 transition-all flex items-center justify-center gap-2 min-h-[48px]"
-              >
-                <span className="material-symbols-outlined">bolt</span>
-                <span>Mulai Aktivasi</span>
-              </a>
-              <a
-                href="#cara-kerja"
-                className="bg-surface-white border border-outline-variant text-primary font-label-bold text-label-bold px-8 py-4 rounded-lg hover:bg-surface-container-low transition-all flex items-center justify-center min-h-[48px]"
-              >
-                Pelajari Lebih Lanjut
-              </a>
+        {/* Hero Section: Mobile displays /img/mobile.png below text; Desktop uses bg2.png background */}
+        <section className="relative w-full bg-none md:bg-[url('/bg2.png')] md:bg-cover md:bg-bottom md:bg-no-repeat pt-6 md:pt-10 pb-10 md:pb-28 px-container-margin border-b border-outline-variant overflow-hidden">
+          <div className="max-w-7xl mx-auto w-full grid grid-cols-1 md:grid-cols-2 gap-stack-lg items-center">
+            {/* Hero Left Content Text & Action Buttons */}
+            <div className="flex flex-col gap-stack-md text-left z-10 max-w-xl py-2">
+              <h1 className="text-headline-lg-mobile font-headline-lg-mobile md:text-headline-lg md:font-headline-lg text-primary leading-tight">
+                Dapatkan Review Google Maps Lebih Cepat
+              </h1>
+              <p className="text-body-lg font-body-lg text-on-surface-variant">
+                Satu tap ke kartu NFC atau scan QR, pelanggan langsung diarahkan ke halaman ulasan bisnis Anda.
+              </p>
+              <div className="flex flex-col sm:flex-row gap-gutter justify-start pt-4">
+                <a
+                  href="#portal"
+                  className="bg-cta-activation text-on-primary font-label-bold text-label-bold px-8 py-4 rounded-lg hover:brightness-110 transition-all flex items-center justify-center gap-2 min-h-[48px] shadow-sm"
+                >
+                  <span className="material-symbols-outlined">bolt</span>
+                  <span>Mulai Aktivasi</span>
+                </a>
+                <a
+                  href="#cara-kerja"
+                  className="bg-surface-white border border-outline-variant text-primary font-label-bold text-label-bold px-8 py-4 rounded-lg hover:bg-surface-container-low transition-all flex items-center justify-center min-h-[48px] shadow-sm"
+                >
+                  Pelajari Lebih Lanjut
+                </a>
+              </div>
             </div>
-          </div>
 
-          <div className="relative w-full aspect-square md:aspect-auto md:h-[480px] flex justify-center items-center rounded-2xl overflow-hidden bg-surface-white border border-outline-variant card-shadow">
-            <div className="absolute inset-0 bg-secondary-container/5 pointer-events-none" />
-            <img
-              className="w-[75%] object-contain drop-shadow-2xl hover:scale-105 transition-transform duration-500 ease-out"
-              alt="UlasIN NFC Smart Card Mockup"
-              src="https://lh3.googleusercontent.com/aida-public/AB6AXuDyVcrwTo1F--EKs9xdy20ts3z6-raTwjcYC1aeoit2o_wobUPtCqU9ihOf-9lTtDhOJ3B5E27Q9Vl3iSxz5mXW5GDOM7dvaX632Q1McGwON4Mgo-IeScEs7eqcmKl5FbJ1Rt4CGqSxs-JuHi-9rTWs33a9fyhSJjCK0PEH_Kwv1yq5mFv3FtQNQvZfpxNIryEOkqqrwfQA9UZ_lEnF75AUsnEZzu_TQS-ccjEL5y8jROPif4q2gQ"
-            />
+            {/* Mobile Only: Mockup Image public/img/mobile.png below buttons */}
+            <div className="block md:hidden mt-4 w-full flex justify-center">
+              <img
+                src="/img/mobile.png"
+                alt="UlasIN Mobile Mockup"
+                className="w-full max-w-md object-contain rounded-xl"
+              />
+            </div>
+
+            {/* Desktop Only: Empty Right Column for Background Photo */}<div className="hidden md:block h-[420px] md:h-[500px] pointer-events-none" />
           </div>
         </section>
 
         {/* Cara Kerja Section */}
-        <section className="bg-surface-white py-stack-lg border-y border-outline-variant" id="cara-kerja">
+        <section className="bg-surface-white py-stack-lg border-b border-outline-variant" id="cara-kerja">
           <div className="max-w-7xl mx-auto px-container-margin">
             <div className="text-center mb-stack-lg">
               <h2 className="text-headline-md font-headline-md text-primary mb-base">
