@@ -25,7 +25,8 @@ export async function POST(req: NextRequest) {
     }
 
     const supabase = getSupabaseServerClient();
-    const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "https://ulasin-id.vercel.app";
+    const rawBaseUrl = process.env.NEXT_PUBLIC_BASE_URL || "https://ulasin-id.vercel.app";
+    const baseUrl = rawBaseUrl.trim().replace(/\/+$/, "");
 
     // 1. RESET CARD (Set back to unactivated status)
     if (action === "reset") {

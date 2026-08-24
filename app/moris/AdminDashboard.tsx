@@ -309,7 +309,8 @@ export default function AdminDashboard({
                 </thead>
                 <tbody className="divide-y divide-outline-variant">
                   {filteredCards.map((c) => {
-                    const baseDomain = process.env.NEXT_PUBLIC_BASE_URL || (typeof window !== "undefined" ? window.location.origin : "https://ulasin-id.vercel.app");
+                    const rawDomain = process.env.NEXT_PUBLIC_BASE_URL || (typeof window !== "undefined" ? window.location.origin : "https://ulasin-id.vercel.app");
+                    const baseDomain = rawDomain.trim().replace(/\/+$/, "");
                     const nfcUrl = `${baseDomain}/c/${c.card_id}`;
 
                     return (
