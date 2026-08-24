@@ -1,6 +1,7 @@
-import { redirect, notFound } from "next/navigation";
+import { notFound } from "next/navigation";
 import { getSupabaseServerClient } from "@/lib/supabaseServer";
 import ActivationForm from "./ActivationForm";
+import SmartRedirect from "./SmartRedirect";
 
 // Pastikan halaman ini SELALU mengecek database terbaru (tanpa cache Next.js)
 // setiap kali kartu di-tap NFC / di-scan QR oleh siapapun.
@@ -22,7 +23,6 @@ export default async function CardPage({
     .maybeSingle();
 
   if (error) {
-    // Jangan bocorkan detail error database ke user, cukup log di server
     console.error("Error fetching card:", error.message);
     throw new Error("Terjadi kesalahan saat memuat kartu.");
   }
@@ -31,8 +31,15 @@ export default async function CardPage({
     notFound();
   }
 
+  // Jika kartu sudah aktif -> gunakan SmartRedirect untuk membuka Aplikasi Native (Android) atau Web Review (iOS)
   if (card.is_active && card.google_review_url) {
-    redirect(card.google_review_url);
+    return (
+      <SmartRedirect
+        googleReviewUrl={card.google_review_url}
+        placeId={card.place_id}
+        businessName={card.business_name}
+      />
+    );
   }
 
   // Kartu belum aktif -> tampilkan form aktivasi
