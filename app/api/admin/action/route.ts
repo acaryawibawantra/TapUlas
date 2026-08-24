@@ -14,14 +14,16 @@ export async function POST(req: NextRequest) {
   try {
     const authHeader = req.headers.get("authorization");
     const body = await req.json();
-    const { cardId, count } = body || {};
+    const { secretKey, action, cardId, count } = body || {};
     const adminSecret = process.env.ADMIN_SECRET_KEY || "ulasin-admin-secret-2026";
 
-    if (authHeader !== `Bearer ${adminSecret}`) {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    // Support both header authorization and JSON body secretKey
+    const providedKey = authHeader ? authHeader.replace("Bearer ", "") : secretKey;
+
+    if (!providedKey || providedKey !== adminSecret) {
+      return NextResponse.json({ error: "Akses ditolak. Secret key salah." }, { status: 401 });
     }
 
-    const { action } = body;
     const supabase = getSupabaseServerClient();
     const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "https://ulasin-id.vercel.app";
 
