@@ -2,6 +2,10 @@ import { redirect, notFound } from "next/navigation";
 import { getSupabaseServerClient } from "@/lib/supabaseServer";
 import EditForm from "./EditForm";
 
+// Pastikan halaman edit SELALU mengecek data Supabase terbaru secara real-time
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
+
 export default async function EditPage({
   params,
 }: {
@@ -12,7 +16,7 @@ export default async function EditPage({
 
   const { data: card, error } = await supabase
     .from("cards")
-    .select("card_id, business_name, is_active")
+    .select("card_id, business_name, google_review_url, is_active")
     .eq("card_id", cardId)
     .maybeSingle();
 
@@ -31,6 +35,10 @@ export default async function EditPage({
   }
 
   return (
-    <EditForm cardId={cardId} currentBusinessName={card.business_name || ""} />
+    <EditForm
+      cardId={cardId}
+      currentBusinessName={card.business_name || ""}
+      googleReviewUrl={card.google_review_url || ""}
+    />
   );
 }

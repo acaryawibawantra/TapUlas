@@ -2,16 +2,12 @@ import { NextRequest, NextResponse } from "next/server";
 import bcrypt from "bcryptjs";
 import { getSupabaseServerClient } from "@/lib/supabaseServer";
 
-// Endpoint sederhana untuk halaman edit (belum dibuatkan UI-nya di starter ini,
-// tapi backend-nya sudah siap dipakai). Alurnya: user masukin card_id + PIN lama,
-// kalau cocok baru boleh update business_name / place_id / pin baru.
-
 export async function POST(req: NextRequest) {
   const body = await req.json();
-  const { cardId, pin, newBusinessName, newPlaceId, newPin } = body || {};
+  const { cardId, pin, newBusinessName, newPlaceId, newGoogleReviewUrl, newPin } = body || {};
 
   if (!cardId || !pin) {
-    return NextResponse.json({ error: "card_id dan PIN wajib diisi." }, { status: 400 });
+    return NextResponse.json({ error: "Card ID dan PIN wajib diisi." }, { status: 400 });
   }
 
   const supabase = getSupabaseServerClient();
@@ -28,19 +24,30 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "Kartu belum diaktivasi." }, { status: 400 });
   }
 
+  // Verifikasi PIN lama
   const pinMatch = await bcrypt.compare(pin, card.pin_hash);
   if (!pinMatch) {
-    return NextResponse.json({ error: "PIN salah." }, { status: 401 });
+    return NextResponse.json({ error: "PIN yang Anda masukkan salah." }, { status: 401 });
   }
 
   const updates: Record<string, any> = {};
-  if (newBusinessName) updates.business_name = newBusinessName;
+
+  if (newBusinessName) {
+    updates.business_name = newBusinessName.trim();
+  }
+
   if (newPlaceId) {
     updates.place_id = newPlaceId;
+  }
+
+  if (newGoogleReviewUrl && newGoogleReviewUrl.trim().length > 0) {
+    updates.google_review_url = newGoogleReviewUrl.trim();
+  } else if (newPlaceId) {
     updates.google_review_url = `https://search.google.com/local/writereview?placeid=${encodeURIComponent(
       newPlaceId
     )}`;
   }
+
   if (newPin) {
     if (!/^\d{4}$/.test(newPin)) {
       return NextResponse.json({ error: "PIN baru harus 4 digit angka." }, { status: 400 });
@@ -58,8 +65,9 @@ export async function POST(req: NextRequest) {
     .eq("card_id", cardId.toUpperCase());
 
   if (updateError) {
+    console.error("Gagal update kartu:", updateError.message);
     return NextResponse.json({ error: "Gagal menyimpan perubahan." }, { status: 500 });
   }
 
-  return NextResponse.json({ ok: true });
+  return NextResponse.json({ ok: true, message: "Berhasil memperbarui data kartu." });
 }
