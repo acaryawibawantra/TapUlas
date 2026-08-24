@@ -309,8 +309,8 @@ export default function AdminDashboard({
                 </thead>
                 <tbody className="divide-y divide-outline-variant">
                   {filteredCards.map((c) => {
-                    const currentOrigin = typeof window !== "undefined" ? window.location.origin : "https://ulasin-id.vercel.app";
-                    const nfcUrl = `${currentOrigin}/c/${c.card_id}`;
+                    const baseDomain = process.env.NEXT_PUBLIC_BASE_URL || (typeof window !== "undefined" ? window.location.origin : "https://ulasin-id.vercel.app");
+                    const nfcUrl = `${baseDomain}/c/${c.card_id}`;
 
                     return (
                       <tr key={c.card_id} className="hover:bg-surface-bright transition-colors">
