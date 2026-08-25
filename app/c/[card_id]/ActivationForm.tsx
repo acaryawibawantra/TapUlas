@@ -211,8 +211,8 @@ export default function ActivationForm({ cardId }: { cardId: string }) {
           <span className="material-symbols-outlined">arrow_back</span>
         </Link>
         <div className="flex items-center gap-2.5">
-          <img src="/logofiks.png" alt="UlasIN Logo" className="w-9 h-9 object-contain rounded-lg" />
-          <div className="text-headline-md font-headline-md font-bold text-primary">UlasIN</div>
+          <img src="/logofiks.png" alt="Ratey Logo" className="w-9 h-9 object-contain rounded-lg" />
+          <div className="text-headline-md font-headline-md font-bold text-primary">Ratey</div>
         </div>
         <div className="w-10" />
       </header>

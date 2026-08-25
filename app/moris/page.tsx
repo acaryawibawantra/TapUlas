@@ -68,8 +68,8 @@ export default function AdminPage() {
       {/* Top Header Mobile Back Link */}
       <header className="fixed top-0 w-full z-50 flex justify-between items-center px-4 h-16 bg-surface-white border-b border-outline-variant">
         <Link href="/" className="flex items-center gap-2.5">
-          <img src="/logofiks.png" alt="UlasIN Logo" className="w-9 h-9 object-contain rounded-lg" />
-          <span className="text-headline-md font-headline-md font-bold text-primary">UlasIN</span>
+          <img src="/logofiks.png" alt="Ratey Logo" className="w-9 h-9 object-contain rounded-lg" />
+          <span className="text-headline-md font-headline-md font-bold text-primary">Ratey</span>
         </Link>
         <span className="text-label-caps font-label-caps text-secondary bg-secondary/10 px-2.5 py-1 rounded-md font-semibold">
           Super Admin
@@ -86,11 +86,11 @@ export default function AdminPage() {
           </div>
 
           <div>
-            <h1 className="text-headline-md font-headline-md text-primary">
-              Portal Super Admin UlasIN
+            <h1 className="text-headline-md font-headline-md text-primary font-bold">
+              Portal Super Admin Ratey
             </h1>
             <p className="text-body-sm font-body-sm text-on-surface-variant mt-1">
-              Masukkan Password Master Admin untuk mengelola seluruh data kartu UlasIN.
+              Masukkan Password Master Admin untuk mengelola seluruh data kartu Ratey.
             </p>
           </div>
         </div>

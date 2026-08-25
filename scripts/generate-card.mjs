@@ -16,7 +16,7 @@ import dotenv from "dotenv";
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 dotenv.config({ path: path.join(__dirname, "..", ".env.local") });
 
-const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL; // contoh: https://ulasin-id.vercel.app
+const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL; // contoh: https://ratey.site
 const supabase = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL,
   process.env.SUPABASE_SERVICE_ROLE_KEY

@@ -15,7 +15,7 @@ export async function POST(req: NextRequest) {
     const authHeader = req.headers.get("authorization");
     const body = await req.json();
     const { secretKey, action, cardId, count } = body || {};
-    const adminSecret = process.env.ADMIN_SECRET_KEY || "ulasin-admin-secret-2026";
+    const adminSecret = process.env.ADMIN_SECRET_KEY || "ratey-admin-secret-2026";
 
     // Support both header authorization and JSON body secretKey
     const providedKey = authHeader ? authHeader.replace("Bearer ", "") : secretKey;
@@ -25,7 +25,7 @@ export async function POST(req: NextRequest) {
     }
 
     const supabase = getSupabaseServerClient();
-    const rawBaseUrl = process.env.NEXT_PUBLIC_BASE_URL || "https://ulasin-id.vercel.app";
+    const rawBaseUrl = process.env.NEXT_PUBLIC_BASE_URL || "https://ratey.site";
     const baseUrl = rawBaseUrl.trim().replace(/\/+$/, "");
 
     // 1. RESET CARD (Set back to unactivated status)

@@ -7,9 +7,9 @@ export default function Home() {
       {/* TopAppBar */}
       <header className="fixed top-0 w-full z-50 flex justify-between items-center px-4 h-16 bg-surface-white border-b border-outline-variant transition-all duration-300">
         <div className="flex items-center gap-2.5">
-          <img src="/logofiks.png" alt="UlasIN Logo" className="w-9 h-9 md:w-10 md:h-10 object-contain rounded-lg" />
+          <img src="/logofiks.png" alt="Ratey Logo" className="w-9 h-9 md:w-10 md:h-10 object-contain rounded-lg" />
           <span className="text-headline-md font-headline-md font-bold text-primary tracking-tight">
-            UlasIN
+            Ratey
           </span>
         </div>
         <div className="hidden md:flex gap-6 items-center">
@@ -81,7 +81,7 @@ export default function Home() {
             <div className="block md:hidden mt-4 w-full flex justify-center">
               <img
                 src="/img/mobile.png"
-                alt="UlasIN Mobile Mockup"
+                alt="Ratey Mobile Mockup"
                 className="w-full max-w-md object-contain rounded-xl"
               />
             </div>
@@ -230,8 +230,8 @@ export default function Home() {
       {/* Footer */}
       <footer className="w-full py-12 px-container-margin flex flex-col items-center space-y-6 bg-surface-container-low border-t border-outline-variant mb-20 md:mb-0">
         <div className="flex items-center gap-2 mb-2">
-          <img src="/logofiks.png" alt="UlasIN Logo" className="w-6 h-6 object-contain rounded-md" />
-          <span className="text-label-bold font-label-bold text-primary tracking-tight">UlasIN</span>
+          <img src="/logofiks.png" alt="Ratey Logo" className="w-6 h-6 object-contain rounded-md" />
+          <span className="text-label-bold font-label-bold text-primary tracking-tight">Ratey</span>
         </div>
         <div className="flex flex-wrap justify-center gap-x-6 gap-y-4">
           <a className="text-text-muted text-label-caps font-label-caps hover:text-primary transition-colors" href="#">
@@ -245,7 +245,7 @@ export default function Home() {
           </a>
         </div>
         <p className="text-body-sm font-body-sm text-on-surface-variant text-center">
-          © 2026 UlasIN. Solusi Review Bisnis Modern.
+          © 2026 Ratey. Solusi Review Bisnis Modern.
         </p>
       </footer>
     </>

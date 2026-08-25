@@ -179,9 +179,9 @@ export default function AdminDashboard({
       {/* Web Top Nav (Desktop Header) */}
       <header className="hidden md:flex fixed top-0 w-full z-50 justify-between items-center px-6 h-16 bg-surface-white border-b border-outline-variant">
         <div className="flex items-center space-x-2.5">
-          <img src="/logofiks.png" alt="UlasIN Logo" className="w-9 h-9 md:w-10 md:h-10 object-contain rounded-lg" />
+          <img src="/logofiks.png" alt="Ratey Logo" className="w-9 h-9 md:w-10 md:h-10 object-contain rounded-lg" />
           <span className="text-headline-md font-headline-md font-bold text-primary tracking-tight">
-            UlasIN
+            Ratey
           </span>
         </div>
 
@@ -212,7 +212,7 @@ export default function AdminDashboard({
               <span className="material-symbols-outlined text-2xl">bolt</span>
             </div>
             <div>
-              <h1 className="text-headline-md font-headline-md text-primary">UlasIN Admin Dashboard</h1>
+              <h1 className="text-headline-md font-headline-md text-primary">Ratey Admin Dashboard</h1>
               <p className="text-body-sm font-body-sm text-text-muted mt-0.5">Kelola Kartu &amp; Generate Barcode</p>
             </div>
           </div>

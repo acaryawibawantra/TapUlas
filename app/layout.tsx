@@ -1,7 +1,7 @@
 import "./globals.css";
 
 export const metadata = {
-  title: "UlasIN - Dapatkan Review Google Maps Lebih Cepat",
+  title: "Ratey - Dapatkan Review Google Maps Lebih Cepat",
   description: "Satu tap ke kartu NFC atau scan QR, pelanggan langsung diarahkan ke halaman ulasan bisnis Anda.",
 };
 
