@@ -179,7 +179,7 @@ export default function AdminDashboard({
       {/* Web Top Nav (Desktop Header) */}
       <header className="hidden md:flex fixed top-0 w-full z-50 justify-between items-center px-6 h-16 bg-surface-white border-b border-outline-variant">
         <div className="flex items-center space-x-2.5">
-          <img src="/logofiks.png" alt="Ratey Logo" className="w-9 h-9 md:w-10 md:h-10 object-contain rounded-lg" />
+          <img src="/ratey-logo.png" alt="Ratey Logo" className="w-9 h-9 md:w-10 md:h-10 object-cover rounded-xl" />
           <span className="text-headline-md font-headline-md font-bold text-primary tracking-tight">
             Ratey
           </span>

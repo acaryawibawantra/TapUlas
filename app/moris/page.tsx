@@ -68,7 +68,7 @@ export default function AdminPage() {
       {/* Top Header Mobile Back Link */}
       <header className="fixed top-0 w-full z-50 flex justify-between items-center px-4 h-16 bg-surface-white border-b border-outline-variant">
         <Link href="/" className="flex items-center gap-2.5">
-          <img src="/logofiks.png" alt="Ratey Logo" className="w-9 h-9 object-contain rounded-lg" />
+          <img src="/ratey-logo.png" alt="Ratey Logo" className="w-9 h-9 object-cover rounded-xl" />
           <span className="text-headline-md font-headline-md font-bold text-primary">Ratey</span>
         </Link>
         <span className="text-label-caps font-label-caps text-secondary bg-secondary/10 px-2.5 py-1 rounded-md font-semibold">

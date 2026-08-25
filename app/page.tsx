@@ -7,7 +7,7 @@ export default function Home() {
       {/* TopAppBar */}
       <header className="fixed top-0 w-full z-50 flex justify-between items-center px-4 h-16 bg-surface-white border-b border-outline-variant transition-all duration-300">
         <div className="flex items-center gap-2.5">
-          <img src="/logofiks.png" alt="Ratey Logo" className="w-9 h-9 md:w-10 md:h-10 object-contain rounded-lg" />
+          <img src="/ratey-logo.png" alt="Ratey Logo" className="w-9 h-9 md:w-10 md:h-10 object-cover rounded-xl" />
           <span className="text-headline-md font-headline-md font-bold text-primary tracking-tight">
             Ratey
           </span>
@@ -230,7 +230,7 @@ export default function Home() {
       {/* Footer */}
       <footer className="w-full py-12 px-container-margin flex flex-col items-center space-y-6 bg-surface-container-low border-t border-outline-variant mb-20 md:mb-0">
         <div className="flex items-center gap-2 mb-2">
-          <img src="/logofiks.png" alt="Ratey Logo" className="w-6 h-6 object-contain rounded-md" />
+          <img src="/ratey-logo.png" alt="Ratey Logo" className="w-7 h-7 object-cover rounded-md" />
           <span className="text-label-bold font-label-bold text-primary tracking-tight">Ratey</span>
         </div>
         <div className="flex flex-wrap justify-center gap-x-6 gap-y-4">
