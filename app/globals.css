@@ -119,3 +119,24 @@ body {
   from { opacity: 0; transform: translateY(6px); }
   to { opacity: 1; transform: translateY(0); }
 }
+
+/* Custom Font & Utility Classes */
+.font-heading,
+.font-serif-display {
+  font-family: 'Space Grotesk', 'Outfit', 'Plus Jakarta Sans', -apple-system, sans-serif;
+}
+
+.font-body {
+  font-family: 'Inter', 'Plus Jakarta Sans', -apple-system, sans-serif;
+}
+
+/* Hide Scrollbar */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+

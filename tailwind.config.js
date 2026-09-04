@@ -9,6 +9,16 @@ module.exports = {
   theme: {
     extend: {
       colors: {
+        brand: {
+          bg: '#FAF8F5',
+          surface: '#F3EFEA',
+          card: '#F7F4EE',
+          border: '#E3DCD2',
+          dark: '#26231E',
+          taupe: '#635E4E',
+          lightTaupe: '#9C9588',
+          accent: '#B87D4B'
+        },
         "surface-container-high": "#e7e8e9",
         "outline": "#76777d",
         "surface-variant": "#e1e3e4",
