@@ -12,19 +12,42 @@ export async function POST(req: NextRequest) {
     }
 
     const supabase = getSupabaseServerClient();
-    const { data: cards, error } = await supabase
+
+    // 1. Fetch data Cards (Ratey Direct)
+    const { data: cards, error: cardsError } = await supabase
       .from("cards")
       .select("*")
       .order("created_at", { ascending: false });
 
-    if (error) {
-      console.error("Error fetching cards:", error.message);
+    if (cardsError) {
+      console.error("Error fetching cards:", cardsError.message);
       return NextResponse.json({ error: "Gagal mengambil data kartu." }, { status: 500 });
     }
 
     const totalCount = cards?.length || 0;
     const activeCount = cards?.filter((c) => c.is_active).length || 0;
     const inactiveCount = totalCount - activeCount;
+
+    // 2. Fetch data Table QRs (Custom Meja Cafe)
+    const { data: tableQrs, error: tableQrsError } = await supabase
+      .from("table_qrs")
+      .select("*")
+      .order("client_slug", { ascending: true })
+      .order("table_num", { ascending: true });
+
+    if (tableQrsError) {
+      console.error("Error fetching table_qrs:", tableQrsError.message);
+      // Jangan fail total — tetap kembalikan cards, tableQrs kosong
+      console.warn("table_qrs fetch skipped (belum migrate tabelnya?)");
+    }
+
+    // Group tableQrs by client_slug untuk summary stats
+    type TableQrRow = NonNullable<typeof tableQrs>[number];
+    const clientGroups: Record<string, TableQrRow[]> = {};
+    for (const t of (tableQrs || []) as TableQrRow[]) {
+      if (!clientGroups[t.client_slug]) clientGroups[t.client_slug] = [];
+      clientGroups[t.client_slug].push(t);
+    }
 
     return NextResponse.json({
       ok: true,
@@ -33,6 +56,12 @@ export async function POST(req: NextRequest) {
         totalCount,
         activeCount,
         inactiveCount,
+      },
+      tableQrs: tableQrs || [],
+      tableQrStats: {
+        totalTables: tableQrs?.length || 0,
+        totalClients: Object.keys(clientGroups).length,
+        clientGroups,
       },
     });
   } catch (err) {

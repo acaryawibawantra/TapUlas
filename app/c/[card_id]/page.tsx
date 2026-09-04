@@ -1,6 +1,7 @@
-import { redirect, notFound } from "next/navigation";
+import { notFound } from "next/navigation";
 import { getSupabaseServerClient } from "@/lib/supabaseServer";
 import ActivationForm from "./ActivationForm";
+import SmartRedirect from "./SmartRedirect";
 
 // Pastikan halaman ini SELALU mengecek database terbaru (tanpa cache Next.js)
 // setiap kali kartu di-tap NFC / di-scan QR oleh siapapun.
@@ -30,10 +31,17 @@ export default async function CardPage({
     notFound();
   }
 
-  // Jika kartu sudah aktif -> INSTANT HTTP SERVER REDIRECT (Tanpa layar loading / delay)
-  // Di Android, ini akan langsung memicu aplikasi Google Maps Native terbuka otomatis.
+  // Jika kartu sudah aktif -> CLIENT-SIDE SMART REDIRECT (coba buka App Maps native, fallback ke web)
+  // Lebih tinggi kesempatan terbuka di App Maps Google (Android/iOS) ketimbang server redirect langsung.
+  // Kesan user: hampir instan (layar polos sekedip, tanpa spinner / text loading).
   if (card.is_active && card.google_review_url) {
-    redirect(card.google_review_url);
+    return (
+      <SmartRedirect
+        googleReviewUrl={card.google_review_url}
+        placeId={card.place_id}
+        businessName={card.business_name}
+      />
+    );
   }
 
   // Kartu belum aktif -> tampilkan form aktivasi

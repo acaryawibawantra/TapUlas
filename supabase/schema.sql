@@ -22,3 +22,22 @@ alter table cards enable row level security;
 -- - anon/public key: tidak bisa baca/tulis apapun ke tabel ini
 -- - service_role key (dipakai di server, bukan di browser): bisa full access
 -- Ini penting supaya PIN hash & data bisnis tidak bisa diakses langsung dari frontend.
+
+-- ──────────────────────────────────────────────────────────────────────────────
+-- TABLE QR MEJA CUSTOM (Tammmu, dan client cafe lainnya)
+-- ──────────────────────────────────────────────────────────────────────────────
+create table if not exists table_qrs (
+  id bigserial primary key,
+  client_slug text not null,
+  table_num text not null,
+  url text not null,
+  created_at timestamptz not null default now(),
+  unique (client_slug, table_num)
+);
+
+create index if not exists idx_table_qrs_client_slug on table_qrs (client_slug);
+create index if not exists idx_table_qrs_created_at on table_qrs (created_at desc);
+
+-- Row Level Security: sama seperti cards, tidak ada akses langsung dari client
+alter table table_qrs enable row level security;
+-- (Tidak ada policy — hanya server dengan service_role yang bisa akses)
